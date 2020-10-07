@@ -1,2 +1,2 @@
 language = "bash"
-run = "python3 tests/test_graph.py"
+run = "python3 tests/test_directed_graph.py"

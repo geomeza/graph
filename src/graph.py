@@ -33,41 +33,56 @@ class Graph:
         if node == starter:
             return result
 
-    def breadth_first_search(self, starting_index):
-        q = [starting_index]
+    def breadth_first_search(self,starter):
         result = []
-        while len(q) > 0:
-            visited = []
-            for i in range(len(q)):
-                for edge in self.edges:
-                    if edge[0] == q[i] and edge[1] not in result:
-                        q.append(edge[1])
-                    if edge[1] == q[i] and edge[0] not in result:
-                        q.append(edge[0])
-                visited.append(q[i])
-            for nodes in visited:
-                q.remove(nodes)
-                if nodes not in result:
-                    result.append(nodes)
+        q = [starter]
+        while len(result) < len(self.nodes):
+            for node in q:
+                if node not in result:
+                    result.append(node)
+                for neighbor in self.nodes[node].neighbors:
+                    if neighbor.index not in result and neighbor.index not in q:     
+                        q.append(neighbor.index)
+                        result.append(neighbor.index)
+                q.remove(node)
         return result
 
-    def find_distance(self, start_node, end_node):
+    def find_distance(self, starter, ender):
         generation_counter = 0
-        q = [start_node]
+        result = [starter]
+        q = [starter]
+        while ender not in result:
+            result_prior = [elem for elem in result]
+            for node in q:
+                if node not in result:
+                    result.append(node)
+                for neighbor in self.nodes[node].neighbors:
+                    if neighbor.index not in result and neighbor.index not in q:     
+                        q.append(neighbor.index)
+                        result.append(neighbor.index)
+                q.remove(node)
+            if result_prior != result:
+                generation_counter += 1
+        return generation_counter
+
+    def find_path(self,starter, ender):
+        all_paths = [[starter]]
         result = []
-        while len(q) > 0:
-            if end_node in q:
-                return generation_counter
-            visited = []
-            for i in range(len(q)):
-                for edge in self.edges:
-                    if edge[0] == q[i] and edge[1] not in result:
-                        q.append(edge[1])
-                    if edge[1] == q[i] and edge[0] not in result:
-                        q.append(edge[0])
-                visited.append(q[i])
-            for nodes in visited:
-                q.remove(nodes)
-                if nodes not in result:
-                    result.append(nodes)
-            generation_counter += 1
+        q = [starter]
+        while ender not in q:
+            for node in q:
+                for neighbor in self.nodes[node].neighbors:
+                    if neighbor.index not in result and neighbor.index not in q:
+                        q.append(neighbor.index)
+                        result.append(neighbor.index)
+                        for path in all_paths:
+                            node_neigbors = [node.index for node in self.nodes[neighbor.index].neighbors]
+                            if neighbor.index not in path and path[-1] in node_neigbors:
+                                copy = path[:]
+                                copy.append(neighbor.index)
+                                all_paths.append(copy)
+                q.remove(node)
+            for path in all_paths:
+                if ender in path:
+                    return path
+        return q
