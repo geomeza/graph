@@ -10,17 +10,26 @@ class Graph:
             self.nodes[i].set_value(self.vertices[i])
         self.build_from_edges(edges)
 
+    # def build_from_edges(self, edges):
+    #     for node in self.nodes:
+    #         for edge in self.edges:
+    #             if node.index == edge[0]:
+    #                 for other_node in self.nodes:
+    #                     if other_node.index == edge[1]:
+    #                         node.set_neighbor(other_node)
+    #             if node.index == edge[1]:
+    #                 for other_node in self.nodes:
+    #                     if other_node.index == edge[0]:
+    #                         node.set_neighbor(other_node)
+
     def build_from_edges(self, edges):
-        for node in self.nodes:
-            for edge in self.edges:
-                if node.index == edge[0]:
-                    for other_node in self.nodes:
-                        if other_node.index == edge[1]:
-                            node.set_neighbor(other_node)
-                if node.index == edge[1]:
-                    for other_node in self.nodes:
-                        if other_node.index == edge[0]:
-                            node.set_neighbor(other_node)
+        for edge in edges:
+            node = self.nodes[edge[0]]
+            other_node = self.nodes[edge[1]]
+            if other_node not in node.neighbors:
+                node.set_neighbor(other_node)
+            if node not in other_node.neighbors:
+                other_node.set_neighbor(node)
 
     def depth_first_search(self, node_index, result = [], starter = None):
         node = self.nodes[node_index]
@@ -47,33 +56,33 @@ class Graph:
                 q.remove(node)
         return result
 
-    def find_distance(self, starter, ender):
+    def find_distance(self, starter, goal):
         generation_counter = 0
         result = [starter]
-        q = [starter]
-        while ender not in result:
+        queue = [starter]
+        while goal not in result:
             result_prior = [elem for elem in result]
-            for node in q:
+            for node in queue:
                 if node not in result:
                     result.append(node)
                 for neighbor in self.nodes[node].neighbors:
-                    if neighbor.index not in result and neighbor.index not in q:     
-                        q.append(neighbor.index)
+                    if neighbor.index not in result and neighbor.index not in queue:     
+                        queue.append(neighbor.index)
                         result.append(neighbor.index)
-                q.remove(node)
+                queue.remove(node)
             if result_prior != result:
                 generation_counter += 1
         return generation_counter
 
-    def find_path(self,starter, ender):
+    def find_path(self,starter, goal):
         all_paths = [[starter]]
         result = []
-        q = [starter]
-        while ender not in q:
-            for node in q:
+        queue = [starter]
+        while goal not in queue:
+            for node in queue:
                 for neighbor in self.nodes[node].neighbors:
-                    if neighbor.index not in result and neighbor.index not in q:
-                        q.append(neighbor.index)
+                    if neighbor.index not in result and neighbor.index not in queue:
+                        queue.append(neighbor.index)
                         result.append(neighbor.index)
                         for path in all_paths:
                             node_neigbors = [node.index for node in self.nodes[neighbor.index].neighbors]
@@ -81,8 +90,8 @@ class Graph:
                                 copy = path[:]
                                 copy.append(neighbor.index)
                                 all_paths.append(copy)
-                q.remove(node)
+                queue.remove(node)
             for path in all_paths:
-                if ender in path:
+                if goal in path:
                     return path
-        return q
+        return queue

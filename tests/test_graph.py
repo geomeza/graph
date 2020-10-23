@@ -31,7 +31,7 @@ edges = [(0,1),(1,2),(1,3),(3,4),(1,4),(4,5)]
 vertices = ['a','b','c','d','e','f']
 graph = Graph(edges, vertices)
 
-assertion(graph, [0, 1, 2, 3, 4, 5], ['a','b','c','d','e', 'f'], [1, 4, 1, 2, 3, 1])
+# assertion(graph, [0, 1, 2, 3, 4, 5], ['a','b','c','d','e', 'f'], [1, 4, 1, 2, 3, 1])
 
 pairs = [[0, 4], [5, 2], [0, 5], [4, 1], [3, 3]]
 distances = [2, 3, 3, 1, 0]
@@ -41,14 +41,16 @@ edges = [(0,1),(1,2),(1,3),(3,4),(1,4),(4,5)]
 vertices = ['a','b','c','d','e','f']
 graph = Graph(edges, vertices)
 
-for i in range(len(distances)):
-    print('\n-------------------')
-    print('Distance Test', i+1, ':')
-    distance_assertion(graph, distances[i], pairs[i][0], pairs[i][1])
-    print('-------------------')
-for i in range(len(paths)):
-    print('\n---------------------')
-    print('Path Test',i+1,':')
-    path_assertion(graph, paths[i], pairs[i][0], pairs[i][1])
-    print('\n---------------------')
+print(graph.breadth_first_search(2))
+
+# for i in range(len(distances)):
+#     print('\n-------------------')
+#     print('Distance Test', i+1, ':')
+#     distance_assertion(graph, distances[i], pairs[i][0], pairs[i][1])
+#     print('-------------------')
+# for i in range(len(paths)):
+#     print('\n---------------------')
+#     print('Path Test',i+1,':')
+#     path_assertion(graph, paths[i], pairs[i][0], pairs[i][1])
+#     print('\n---------------------')
 
