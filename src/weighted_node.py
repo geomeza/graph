@@ -5,3 +5,4 @@ class WeightedNode:
         self.value = value
         self.weights = weights
         self.d_val = 9999999
+        self.path = []

@@ -41,16 +41,16 @@ edges = [(0,1),(1,2),(1,3),(3,4),(1,4),(4,5)]
 vertices = ['a','b','c','d','e','f']
 graph = Graph(edges, vertices)
 
-print(graph.breadth_first_search(2))
+# print(graph.breadth_first_search(2))
 
 # for i in range(len(distances)):
 #     print('\n-------------------')
 #     print('Distance Test', i+1, ':')
 #     distance_assertion(graph, distances[i], pairs[i][0], pairs[i][1])
 #     print('-------------------')
-# for i in range(len(paths)):
-#     print('\n---------------------')
-#     print('Path Test',i+1,':')
-#     path_assertion(graph, paths[i], pairs[i][0], pairs[i][1])
-#     print('\n---------------------')
+for i in range(len(paths)):
+    print('\n---------------------')
+    print('Path Test',i+1,':')
+    path_assertion(graph, paths[i], pairs[i][0], pairs[i][1])
+    print('\n---------------------')
 

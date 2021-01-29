@@ -26,14 +26,20 @@ class WeightedGraph:
             if node.index == index:
                 return node
 
-    def calc_distance(self, starting_node, ending_node, current = None, visited = []):
+    def calc_distance(self, starting_node, ending_node, current = None, visited = [], find_path = False):
         if current is None:
             current = self.find_node(starting_node)
             current.d_val = 0
+            for node in self.nodes:
+                node.path = []
+            current.path = [current.index]
         for edge, weight in current.weights.items():
             neighbor = self.find_node(edge[edge.index(current.index) - 1])
             if neighbor.d_val > current.d_val + weight:
                 neighbor.d_val = current.d_val + weight
+                new_path = current.path[:]
+                new_path.extend([neighbor.index])
+                neighbor.path = new_path
                 if neighbor in visited:
                     visited.remove(neighbor)
         if current not in visited:
@@ -43,4 +49,10 @@ class WeightedGraph:
                 self.calc_distance(starting_node, ending_node, current = neighbor, visited = visited)
         if len(visited) == len(self.nodes):
             ender = self.find_node(ending_node)
-            return ender.d_val
+            if find_path:
+                return ender.path
+            else:
+                return ender.d_val
+
+    def calc_shortest_path(self, starter, ender):
+        return self.calc_distance(starter, ender, find_path = True)
