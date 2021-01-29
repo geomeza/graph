@@ -30,8 +30,6 @@ class WeightedGraph:
         if current is None:
             current = self.find_node(starting_node)
             current.d_val = 0
-            for node in self.nodes:
-                node.path = []
             current.path = [current.index]
         for edge, weight in current.weights.items():
             neighbor = self.find_node(edge[edge.index(current.index) - 1])
